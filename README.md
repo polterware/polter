@@ -1,6 +1,6 @@
-# polterbase
+# @polterware/polterbase
 
-[![npm version](https://img.shields.io/npm/v/polterbase.svg)](https://www.npmjs.com/package/polterbase)
+[![npm version](https://img.shields.io/npm/v/%40polterware%2Fpolterbase.svg)](https://www.npmjs.com/package/@polterware/polterbase)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/badge/Node.js-18%2B-green.svg)](https://nodejs.org/)
 
@@ -25,13 +25,13 @@ Polterbase is a productivity layer on top of the official `supabase` CLI. Instea
 ### Run without installing globally
 
 ```bash
-npx polterbase
+npx @polterware/polterbase
 ```
 
 ### Install globally
 
 ```bash
-npm install -g polterbase
+npm install -g @polterware/polterbase
 ```
 
 Then run:

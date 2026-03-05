@@ -1,6 +1,6 @@
 {
-  "name": "polterbase",
-  "version": "0.1.1",
+  "name": "@polterware/polterbase",
+  "version": "0.1.2",
   "description": "A global CLI for managing Supabase CLI workflows.",
   "type": "module",
   "bin": {
