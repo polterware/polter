@@ -3,8 +3,8 @@ import {
   categories,
   getCategoryOptions,
   getCommandOptions,
-} from "./commands.js";
-import { globalFlags } from "./flags.js";
+} from "./data/commands.js";
+import { globalFlags } from "./data/flags.js";
 
 describe("commands", () => {
   it("should have no empty categories", () => {
