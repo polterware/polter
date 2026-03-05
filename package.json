@@ -1,7 +1,7 @@
 {
   "name": "@polterware/polterbase",
   "version": "0.2.4",
-  "description": "A global CLI for managing Supabase CLI workflows.",
+  "description": "An interactive CLI for managing Supabase CLI workflows.",
   "type": "module",
   "bin": {
     "polterbase": "./dist/index.js"
@@ -22,7 +22,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "preferGlobal": true,
   "scripts": {
     "dev": "tsup src/index.tsx --watch --format esm --dts",
     "build": "tsup src/index.tsx --format esm --clean",

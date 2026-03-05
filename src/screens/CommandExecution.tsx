@@ -205,7 +205,7 @@ export function CommandExecution({
             result.spawnError.includes("not found")) && (
               <Box flexDirection="column" marginLeft={2} marginTop={1}>
                 <Text color={inkColors.accent} bold>
-                  💡 Supabase CLI not found in PATH
+                  💡 Supabase CLI not found in this repository or PATH
                 </Text>
                 <Box gap={1}>
                   <Text dimColor>Install it:</Text>

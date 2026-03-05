@@ -76,6 +76,11 @@ export function MainMenu({
       return;
     }
 
+    if (value === "__action_update__") {
+      onNavigate("self-update");
+      return;
+    }
+
     if (value === "__action_exit__") {
       onExit();
     }

@@ -6,7 +6,8 @@ export type Screen =
   | "custom-command"
   | "flag-selection"
   | "command-execution"
-  | "confirm-execute";
+  | "confirm-execute"
+  | "self-update";
 
 export interface NavigationParams {
   command?: string;

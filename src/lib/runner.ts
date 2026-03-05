@@ -1,4 +1,6 @@
 import { spawn } from "node:child_process";
+import { existsSync } from "node:fs";
+import { delimiter, dirname, join, resolve } from "node:path";
 
 export interface RunResult {
   exitCode: number | null;
@@ -8,12 +10,98 @@ export interface RunResult {
   spawnError?: string;
 }
 
-export async function runSupabaseCommand(args: string[]): Promise<RunResult> {
+export interface CommandExecution {
+  command: string;
+  env?: NodeJS.ProcessEnv;
+}
+
+export interface SupabaseCommandResolution extends CommandExecution {
+  source: "repository" | "path";
+  localBinDir?: string;
+}
+
+function getSupabaseBinaryCandidates(): string[] {
+  if (process.platform === "win32") {
+    return ["supabase.cmd", "supabase.exe", "supabase"];
+  }
+
+  return ["supabase"];
+}
+
+function hasLocalSupabaseBinary(binDir: string): boolean {
+  return getSupabaseBinaryCandidates().some((candidate) =>
+    existsSync(join(binDir, candidate)),
+  );
+}
+
+function getPathEnvKey(env: NodeJS.ProcessEnv): string {
+  return Object.keys(env).find((key) => key.toLowerCase() === "path") ?? "PATH";
+}
+
+export function findLocalSupabaseBinDir(
+  startDir: string = process.cwd(),
+): string | undefined {
+  let currentDir = resolve(startDir);
+
+  while (true) {
+    const binDir = join(currentDir, "node_modules", ".bin");
+    if (hasLocalSupabaseBinary(binDir)) {
+      return binDir;
+    }
+
+    const parentDir = dirname(currentDir);
+    if (parentDir === currentDir) {
+      return undefined;
+    }
+
+    currentDir = parentDir;
+  }
+}
+
+export function resolveSupabaseCommand(
+  startDir: string = process.cwd(),
+  env: NodeJS.ProcessEnv = process.env,
+): SupabaseCommandResolution {
+  const localBinDir = findLocalSupabaseBinDir(startDir);
+
+  if (!localBinDir) {
+    return {
+      command: "supabase",
+      env: { ...env },
+      source: "path",
+    };
+  }
+
+  const pathKey = getPathEnvKey(env);
+  const currentPath = env[pathKey];
+
+  return {
+    command: "supabase",
+    env: {
+      ...env,
+      [pathKey]: currentPath
+        ? `${localBinDir}${delimiter}${currentPath}`
+        : localBinDir,
+    },
+    source: "repository",
+    localBinDir,
+  };
+}
+
+export async function runCommand(
+  execution: string | CommandExecution,
+  args: string[],
+  cwd: string = process.cwd(),
+): Promise<RunResult> {
   return new Promise<RunResult>((resolve) => {
     let stdout = "";
     let stderr = "";
+    const resolvedExecution =
+      typeof execution === "string" ? { command: execution } : execution;
 
-    const child = spawn("supabase", args, {
+    const child = spawn(resolvedExecution.command, args, {
+      cwd,
+      env: resolvedExecution.env,
       shell: true,
       stdio: ["inherit", "pipe", "pipe"],
     });
@@ -44,4 +132,11 @@ export async function runSupabaseCommand(args: string[]): Promise<RunResult> {
       resolve({ exitCode: code, signal, stdout, stderr });
     });
   });
+}
+
+export async function runSupabaseCommand(
+  args: string[],
+  cwd: string = process.cwd(),
+): Promise<RunResult> {
+  return runCommand(resolveSupabaseCommand(cwd), args, cwd);
 }

@@ -18,17 +18,30 @@ Polterbase is a productivity layer on top of the official `supabase` CLI. Instea
 - **Global Flags Picker**: Add common global flags in one step
 - **Pinned Commands and Runs**: Toggle base command pins with `→` and pin exact runs after success
 - **Custom Command Mode**: Run raw Supabase arguments like `-v` or `status -o json`
-- **Shell Execution**: Executes your local `supabase` binary directly
+- **Built-in Self-Update**: Update Polterbase for the current repository or globally through npm
+- **Shell Execution**: Resolves `supabase` from the current repository first, then falls back to `PATH`
 - **TypeScript-based CLI**: Strongly typed internal implementation
 
 ---
 
 ## Installation
 
-### Run without installing globally
+### Run one-off without installing
 
 ```bash
-npx @polterware/polterbase
+npx @polterware/polterbase@latest
+```
+
+### Install in a repository
+
+```bash
+npm install -D @polterware/polterbase
+```
+
+Then run it from that repository with:
+
+```bash
+npx polterbase
 ```
 
 ### Install globally
@@ -43,15 +56,10 @@ Then run:
 polterbase
 ```
 
-`polterbase` is a global CLI tool. Do not add it to `dependencies` or `devDependencies` of app projects.
+Use a repository install when you want the CLI version pinned to one project.
+Use a global install when you want the same CLI version across every repository.
 
 ### Update
-
-If you run Polterbase with `npx`, always use the latest published version explicitly:
-
-```bash
-npx @polterware/polterbase@latest
-```
 
 If you installed it globally, update it with:
 
@@ -59,12 +67,25 @@ If you installed it globally, update it with:
 npm install -g @polterware/polterbase@latest
 ```
 
+If you installed it in a repository, update it there with:
+
+```bash
+npm install -D @polterware/polterbase@latest
+```
+
+You can also run the same update flow from inside Polterbase:
+
+1. Go to the `Actions` section
+2. Choose `Update Polterbase`
+3. Choose `Current repository` or `Global install`
+4. Confirm the npm update command
+
 ---
 
 ## Requirements
 
 - **Node.js**: `>= 18`
-- **Supabase CLI**: installed and available in `PATH`
+- **Supabase CLI**: installed globally in `PATH` or locally in the current repository
 
 Check your environment:
 
@@ -83,10 +104,20 @@ Install Supabase CLI (official docs):
 
 ### Execution Model
 
-Polterbase always executes commands as:
+Polterbase executes workflow commands as:
 
 ```bash
 supabase <command> <extra-args> <global-flags>
+```
+
+The self-update action is the only built-in exception and can run one of:
+
+```bash
+npm install -g @polterware/polterbase@latest
+```
+
+```bash
+npm install -D @polterware/polterbase@latest
 ```
 
 ### Typical Flow
@@ -252,11 +283,11 @@ supabase db pull --yes
 
 ### `supabase: command not found`
 
-Supabase CLI is not installed or not in your `PATH`.
+Supabase CLI is not installed in the current repository and is not available in your `PATH`.
 
 Fix:
 
-1. Install Supabase CLI
+1. Install Supabase CLI globally or in the current repository
 2. Restart terminal
 3. Run `supabase --version`
 

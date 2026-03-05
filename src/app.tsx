@@ -6,6 +6,7 @@ import { CommandArgs } from "./screens/CommandArgs.js";
 import { CustomCommand } from "./screens/CustomCommand.js";
 import { FlagSelection } from "./screens/FlagSelection.js";
 import { CommandExecution } from "./screens/CommandExecution.js";
+import { SelfUpdate } from "./screens/SelfUpdate.js";
 import { colors } from "./theme.js";
 
 export function App(): React.ReactElement {
@@ -57,6 +58,9 @@ export function App(): React.ReactElement {
           onExit={handleExit}
         />
       );
+
+    case "self-update":
+      return <SelfUpdate onBack={goBack} onExit={handleExit} />;
 
     default:
       return (

@@ -1,9 +1,17 @@
 import { useState, useCallback } from "react";
-import { runSupabaseCommand, type RunResult } from "../lib/runner.js";
+import {
+  runCommand,
+  runSupabaseCommand,
+  type CommandExecution,
+  type RunResult,
+} from "../lib/runner.js";
 
 export type CommandStatus = "idle" | "running" | "success" | "error";
 
-export function useCommand() {
+export function useCommand(
+  execution: string | CommandExecution = "supabase",
+  cwd: string = process.cwd(),
+) {
   const [status, setStatus] = useState<CommandStatus>("idle");
   const [result, setResult] = useState<RunResult | null>(null);
 
@@ -11,7 +19,10 @@ export function useCommand() {
     setStatus("running");
     setResult(null);
 
-    const res = await runSupabaseCommand(args);
+    const res =
+      execution === "supabase"
+        ? await runSupabaseCommand(args, cwd)
+        : await runCommand(execution, args, cwd);
     setResult(res);
 
     if (res.spawnError || (res.exitCode !== null && res.exitCode !== 0)) {
@@ -21,7 +32,7 @@ export function useCommand() {
     }
 
     return res;
-  }, []);
+  }, [cwd, execution]);
 
   const reset = useCallback(() => {
     setStatus("idle");

@@ -144,6 +144,14 @@ export function buildMainMenuItems({
     kind: "action",
   });
   nextItems.push({
+    id: "action-update",
+    value: "__action_update__",
+    label: "Update Polterbase",
+    hint: "Update the current repo install or the global install",
+    icon: "⬆️",
+    kind: "action",
+  });
+  nextItems.push({
     id: "action-exit",
     value: "__action_exit__",
     label: "Exit",

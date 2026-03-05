@@ -52,8 +52,17 @@ describe("buildMainMenuItems", () => {
       pinnedRuns: [],
       pinnedCommands: [],
     });
+    const actionIds = items
+      .filter((item) => item.kind === "action")
+      .map((item) => item.id);
 
     expect(items.some((item) => item.id === "action-custom")).toBe(true);
+    expect(items.some((item) => item.id === "action-update")).toBe(true);
     expect(items.some((item) => item.id === "action-exit")).toBe(true);
+    expect(actionIds).toEqual([
+      "action-custom",
+      "action-update",
+      "action-exit",
+    ]);
   });
 });
