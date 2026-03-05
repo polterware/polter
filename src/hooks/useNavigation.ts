@@ -2,19 +2,16 @@ import { useState, useCallback } from "react";
 
 export type Screen =
   | "main-menu"
-  | "category-commands"
+  | "command-args"
   | "custom-command"
   | "flag-selection"
-  | "manage-pins"
   | "command-execution"
   | "confirm-execute";
 
 export interface NavigationParams {
-  categoryKey?: string;
   command?: string;
   args?: string[];
   flags?: string[];
-  isPinnedExec?: boolean;
 }
 
 export interface NavigationState {

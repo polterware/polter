@@ -6,14 +6,15 @@
 
 An optimized interactive CLI for managing Supabase CLI workflows with more speed, consistency, and discoverability.
 
-Polterbase is a productivity layer on top of the official `supabase` CLI. Instead of memorizing command trees, you choose categories, build commands interactively, attach global flags, and pin common workflows for one-click reuse.
+Polterbase is a productivity layer on top of the official `supabase` CLI. Instead of memorizing command trees, you browse one unified board, add extra args interactively, attach global flags, and pin common workflows for one-click reuse.
 
 ## Features
 
 - **Interactive Command Builder**: Guided flow for command + subcommand + extra args
-- **Supabase Command Discovery**: Organized by practical categories
+- **Suggested Subcommand Picker**: Select common args (for example `db pull`) before typing custom args
+- **Unified Command Board**: Pinned commands, grouped categories, and actions in one screen
 - **Global Flags Picker**: Add common global flags in one step
-- **Pinned Commands**: Save successful command combinations for faster repetition
+- **Pinned Commands and Runs**: Toggle base command pins with `→` and pin exact runs after success
 - **Custom Command Mode**: Run raw Supabase arguments like `-v` or `status -o json`
 - **Shell Execution**: Executes your local `supabase` binary directly
 - **TypeScript-based CLI**: Strongly typed internal implementation
@@ -74,12 +75,11 @@ supabase <command> <extra-args> <global-flags>
 
 ### Typical Flow
 
-1. Choose a category
-2. Choose a base command
-3. Add optional extra args
+1. Choose a command from the unified board
+2. Optionally pin/unpin with `→`
+3. Choose suggested args or type custom extra args
 4. Pick optional global flags
 5. Confirm and execute
-6. Optionally pin command after success
 
 ---
 
@@ -156,11 +156,13 @@ Available global flags in the interactive selector:
 
 ## Pinned Commands
 
-After a successful execution, Polterbase can pin the command for quick reuse.
+Polterbase supports two pinned sections at the top of the main menu:
 
-Pinned items appear at the top of the main menu and can be removed via:
+- `Pinned Runs` for exact commands like `db pull --debug`
+- `Pinned Commands` for base commands like `db` or `start`
 
-- `Manage Pinned Commands`
+Use `→` on a selected base command to pin or unpin it.
+After a successful execution, Polterbase can also pin that exact command into `Pinned Runs`.
 
 Pins are persisted locally using OS-level app config storage.
 
@@ -245,7 +247,7 @@ Polterbase forwards execution to Supabase CLI. Use `--debug` and re-run to inspe
 
 ### Pinned commands are missing
 
-Pins are only suggested after successful runs. Confirm the pin prompt after a successful command.
+Pins are managed directly in the board. Select a base command and press `→` to pin it, or pin an exact run after a successful execution.
 
 ### Interactive prompt did not open correctly
 

@@ -3,10 +3,9 @@ import { Box, Text, useApp } from "ink";
 import pc from "picocolors";
 import { useNavigation } from "./hooks/useNavigation.js";
 import { MainMenu } from "./screens/MainMenu.js";
-import { CategoryCommands } from "./screens/CategoryCommands.js";
+import { CommandArgs } from "./screens/CommandArgs.js";
 import { CustomCommand } from "./screens/CustomCommand.js";
 import { FlagSelection } from "./screens/FlagSelection.js";
-import { ManagePins } from "./screens/ManagePins.js";
 import { CommandExecution } from "./screens/CommandExecution.js";
 
 export function App(): React.ReactElement {
@@ -28,10 +27,10 @@ export function App(): React.ReactElement {
     case "main-menu":
       return <MainMenu onNavigate={navigate} onExit={handleExit} />;
 
-    case "category-commands":
+    case "command-args":
       return (
-        <CategoryCommands
-          categoryKey={params.categoryKey ?? ""}
+        <CommandArgs
+          command={params.command ?? ""}
           onNavigate={navigate}
           onBack={goBack}
         />
@@ -49,16 +48,11 @@ export function App(): React.ReactElement {
         />
       );
 
-    case "manage-pins":
-      return <ManagePins onBack={goBack} />;
-
     case "confirm-execute":
     case "command-execution":
       return (
         <CommandExecution
           args={params.args ?? []}
-          isPinnedExec={params.isPinnedExec}
-          onNavigate={navigate}
           onBack={goBack}
           onExit={handleExit}
         />

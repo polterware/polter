@@ -6,14 +6,11 @@ import { ConfirmPrompt } from "../components/ConfirmPrompt.js";
 import { Divider } from "../components/Divider.js";
 import { StatusBar } from "../components/StatusBar.js";
 import { useCommand } from "../hooks/useCommand.js";
-import { addPinnedCommand, isPinned } from "../data/pins.js";
+import { isPinnedRun, togglePinnedRun } from "../data/pins.js";
 import { openInBrowser, copyToClipboard } from "../lib/clipboard.js";
-import type { NavigationParams, Screen } from "../hooks/useNavigation.js";
 
 interface CommandExecutionProps {
   args: string[];
-  isPinnedExec?: boolean;
-  onNavigate: (screen: Screen, params?: NavigationParams) => void;
   onBack: () => void;
   onExit: () => void;
 }
@@ -21,14 +18,12 @@ interface CommandExecutionProps {
 type Phase =
   | "confirm"
   | "running"
-  | "success"
   | "success-pin-offer"
+  | "success"
   | "error-menu";
 
 export function CommandExecution({
   args: initialArgs,
-  isPinnedExec = false,
-  onNavigate,
   onBack,
   onExit,
 }: CommandExecutionProps): React.ReactElement {
@@ -38,6 +33,7 @@ export function CommandExecution({
   const { status, result, run, reset } = useCommand();
 
   const cmdDisplay = `supabase ${currentArgs.join(" ")}`;
+  const runCommand = currentArgs.join(" ");
 
   // Start execution after confirm
   useEffect(() => {
@@ -49,16 +45,16 @@ export function CommandExecution({
   // Transition after command completes
   useEffect(() => {
     if (phase === "running" && status === "success") {
-      if (!isPinnedExec && !isPinned(currentArgs.join(" "))) {
-        setPhase("success-pin-offer");
-      } else {
+      if (isPinnedRun(runCommand)) {
         setPhase("success");
+      } else {
+        setPhase("success-pin-offer");
       }
     }
     if (phase === "running" && status === "error") {
       setPhase("error-menu");
     }
-  }, [phase, status, isPinnedExec, currentArgs]);
+  }, [phase, runCommand, status]);
 
   // Confirm phase
   if (phase === "confirm") {
@@ -99,8 +95,7 @@ export function CommandExecution({
     );
   }
 
-  // Success phase
-  if (phase === "success") {
+  if (phase === "success-pin-offer") {
     return (
       <Box flexDirection="column">
         <Divider />
@@ -113,17 +108,23 @@ export function CommandExecution({
           </Text>
         </Box>
 
-        <SelectList
-          items={[{ value: "__back__", label: "← Back to menu" }]}
-          onSelect={onBack}
-          onCancel={onBack}
+        <ConfirmPrompt
+          message="Pin this exact command?"
+          defaultValue={false}
+          onConfirm={(shouldPin) => {
+            if (shouldPin && !isPinnedRun(runCommand)) {
+              togglePinnedRun(runCommand);
+              setPinMessage("Exact command pinned to Pinned Runs.");
+            }
+            setPhase("success");
+          }}
         />
       </Box>
     );
   }
 
-  // Success + pin offer
-  if (phase === "success-pin-offer") {
+  // Success phase
+  if (phase === "success") {
     return (
       <Box flexDirection="column">
         <Divider />
@@ -142,18 +143,10 @@ export function CommandExecution({
           </Box>
         )}
 
-        <ConfirmPrompt
-          message="📌 Pin this command for quick access?"
-          defaultValue={false}
-          onConfirm={(shouldPin) => {
-            if (shouldPin) {
-              addPinnedCommand(currentArgs.join(" "));
-              setPinMessage(
-                "Pinned! It will appear at the top of the menu.",
-              );
-            }
-            setPhase("success");
-          }}
+        <SelectList
+          items={[{ value: "__back__", label: "← Back to menu" }]}
+          onSelect={onBack}
+          onCancel={onBack}
         />
       </Box>
     );
@@ -258,12 +251,14 @@ export function CommandExecution({
         onSelect={async (action) => {
           switch (action) {
             case "retry":
+              setPinMessage(undefined);
               reset();
               setPhase("running");
               break;
             case "retry-debug": {
               const newArgs = [...currentArgs, "--debug"];
               setCurrentArgs(newArgs);
+              setPinMessage(undefined);
               reset();
               setPhase("running");
               break;
