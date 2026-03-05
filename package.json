@@ -1,0 +1,42 @@
+{
+  "name": "polterbase",
+  "version": "0.1.0",
+  "description": "A core package for the Polterware ecosystem.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "bin": {
+    "polterbase": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/polterware/polterbase.git"
+  },
+  "scripts": {
+    "dev": "tsup src/index.ts --watch --format esm --dts",
+    "build": "tsup src/index.ts --format esm --clean",
+    "lint": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "keywords": [
+    "polterware",
+    "polterbase",
+    "sdk"
+  ],
+  "author": "Erick Patrick Barcelos",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^22.13.10",
+    "tsup": "^8.3.6",
+    "typescript": "^5.8.2",
+    "vitest": "^3.0.7"
+  },
+  "dependencies": {
+    "@clack/prompts": "^1.1.0",
+    "conf": "^15.1.0",
+    "picocolors": "^1.1.1"
+  }
+}
