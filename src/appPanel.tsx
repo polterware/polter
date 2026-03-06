@@ -349,6 +349,7 @@ export function AppPanel(): React.ReactElement {
           <FlagSelection
             args={nav.innerParams.args ?? []}
             tool={nav.innerParams.tool}
+            interactive={nav.innerParams.interactive}
             onNavigate={nav.navigateInner}
             onBack={nav.goBackInner}
             width={w}
@@ -365,6 +366,7 @@ export function AppPanel(): React.ReactElement {
             key={`${nav.view}-${nav.innerParams.tool}-${(nav.innerParams.args ?? []).join("-")}`}
             args={nav.innerParams.args ?? []}
             tool={nav.innerParams.tool}
+            interactive={nav.innerParams.interactive}
             onBack={nav.goBackInner}
             onHome={nav.goHomeInner}
             onExit={handleExit}

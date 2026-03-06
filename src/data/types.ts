@@ -8,6 +8,7 @@ export interface CommandDef {
   hint?: string;
   suggestedArgs?: SuggestedArg[];
   editorTarget?: "config" | "code";
+  interactive?: boolean;
 }
 
 export interface SuggestedArg {

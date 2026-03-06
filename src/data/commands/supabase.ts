@@ -8,6 +8,7 @@ export const supabaseCommands: CommandDef[] = [
     base: ["bootstrap"],
     label: "bootstrap",
     hint: "Bootstrap from a starter template",
+    interactive: true,
   },
   {
     id: "supabase:init",
@@ -15,6 +16,7 @@ export const supabaseCommands: CommandDef[] = [
     base: ["init"],
     label: "init",
     hint: "Initialize a local project",
+    interactive: true,
   },
   {
     id: "supabase:login",
@@ -22,6 +24,7 @@ export const supabaseCommands: CommandDef[] = [
     base: ["login"],
     label: "login",
     hint: "Authenticate with access token",
+    interactive: true,
   },
   {
     id: "supabase:logout",
@@ -129,6 +132,7 @@ export const supabaseCommands: CommandDef[] = [
     base: ["link"],
     label: "link",
     hint: "Link to remote project",
+    interactive: true,
   },
   {
     id: "supabase:unlink",

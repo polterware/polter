@@ -64,6 +64,7 @@ export function CommandArgs({
       args: [...baseArgs, ...extraArgs],
       command,
       tool: resolvedTool,
+      interactive: cmdDef?.interactive,
     });
   };
 

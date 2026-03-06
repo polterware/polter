@@ -15,6 +15,7 @@ export const ghCommands: CommandDef[] = [
     base: ["repo", "create"],
     label: "repo create",
     hint: "Create a new repository",
+    interactive: true,
   },
   {
     id: "gh:repo:view",
@@ -184,6 +185,7 @@ export const ghCommands: CommandDef[] = [
     base: ["auth", "login"],
     label: "auth login",
     hint: "Log in to GitHub",
+    interactive: true,
   },
   {
     id: "gh:auth:status",

@@ -114,6 +114,7 @@ export const vercelCommands: CommandDef[] = [
     base: ["link"],
     label: "link",
     hint: "Link to a Vercel project",
+    interactive: true,
   },
   {
     id: "vercel:login",
@@ -121,6 +122,7 @@ export const vercelCommands: CommandDef[] = [
     base: ["login"],
     label: "login",
     hint: "Log in to Vercel",
+    interactive: true,
   },
   {
     id: "vercel:whoami",

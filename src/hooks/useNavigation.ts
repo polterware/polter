@@ -11,6 +11,7 @@ export interface NavigationParams {
   flags?: string[];
   featureId?: string;
   pipelineId?: string;
+  interactive?: boolean;
 }
 
 export interface NavigationState {

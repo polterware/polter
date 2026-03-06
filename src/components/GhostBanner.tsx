@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Text } from "ink";
 import { ghost as ghostData, inkColors, VERSION } from "../theme.js";
-import { getToolInfo } from "../lib/toolResolver.js";
+import { getToolLinkInfo } from "../lib/toolResolver.js";
 
 interface GhostBannerProps {
   width?: number;
@@ -9,16 +9,16 @@ interface GhostBannerProps {
 }
 
 const ToolStatusBadges = React.memo(function ToolStatusBadges(): React.ReactElement {
-  const tools = (["supabase", "gh", "vercel"] as const).map(getToolInfo);
+  const tools = (["supabase", "gh", "vercel"] as const).map((id) => getToolLinkInfo(id));
   return (
     <Box gap={1}>
       {tools.map((t) => (
         <Text
           key={t.id}
-          color={t.installed ? inkColors.accent : "red"}
+          color={t.linked ? inkColors.accent : t.installed ? "yellow" : "red"}
           dimColor={!t.installed}
         >
-          {t.id}:{t.installed ? "ok" : "x"}
+          {t.id}:{t.linked ? "linked" : t.installed ? "ok" : "x"}
         </Text>
       ))}
     </Box>

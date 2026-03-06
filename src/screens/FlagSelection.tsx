@@ -10,6 +10,7 @@ import type { CliToolId } from "../data/types.js";
 interface FlagSelectionProps {
   args: string[];
   tool?: CliToolId;
+  interactive?: boolean;
   onNavigate: (screen: Screen, params?: NavigationParams) => void;
   onBack: () => void;
   width?: number;
@@ -21,6 +22,7 @@ interface FlagSelectionProps {
 export function FlagSelection({
   args,
   tool = "supabase",
+  interactive,
   onNavigate,
   onBack,
   width = 80,
@@ -32,7 +34,7 @@ export function FlagSelection({
 
   if (flags.length === 0) {
     // No flags for this tool, go straight to execution
-    onNavigate("confirm-execute", { args, tool });
+    onNavigate("confirm-execute", { args, tool, interactive });
     return <Box />;
   }
 
@@ -63,7 +65,7 @@ export function FlagSelection({
                 selectedFlags.length > 0
                   ? [...args, ...selectedFlags]
                   : args;
-              onNavigate("confirm-execute", { args: finalArgs, tool });
+              onNavigate("confirm-execute", { args: finalArgs, tool, interactive });
             }}
             onCancel={onBack}
             isInputActive={isInputActive}

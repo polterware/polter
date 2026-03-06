@@ -18,6 +18,7 @@ import type { CliToolId } from "../data/types.js";
 interface CommandExecutionProps {
   args: string[];
   tool?: CliToolId;
+  interactive?: boolean;
   onBack: () => void;
   onHome?: () => void;
   onExit: () => void;
@@ -38,6 +39,7 @@ type Phase =
 export function CommandExecution({
   args: initialArgs,
   tool = "supabase",
+  interactive = false,
   onBack,
   onHome,
   onExit,
@@ -60,9 +62,18 @@ export function CommandExecution({
 
   useEffect(() => {
     if (phase === "running" && status === "idle") {
-      run(currentArgs);
+      if (panelMode && interactive) {
+        const interactiveResult = runInteractive(tool, currentArgs);
+        if (!interactiveResult.spawnError && interactiveResult.exitCode === 0) {
+          setPhase("success");
+        } else {
+          setPhase("error-menu");
+        }
+      } else {
+        run(currentArgs);
+      }
     }
-  }, [phase, status, run, currentArgs]);
+  }, [phase, status, run, currentArgs, panelMode, interactive, tool, runInteractive]);
 
   useEffect(() => {
     if (phase === "running" && status === "success") {

@@ -3,7 +3,7 @@ import { Box, Text } from "ink";
 import { SelectList } from "../components/SelectList.js";
 import { StatusBar } from "../components/StatusBar.js";
 import { inkColors } from "../theme.js";
-import { getToolInfo } from "../lib/toolResolver.js";
+import { getToolLinkInfo } from "../lib/toolResolver.js";
 import type { CliToolId } from "../data/types.js";
 
 interface ToolStatusProps {
@@ -15,9 +15,10 @@ interface ToolStatusProps {
 }
 
 const toolIds: CliToolId[] = ["supabase", "gh", "vercel", "git"];
+const linkableTools = new Set<CliToolId>(["supabase", "gh", "vercel"]);
 
 export function ToolStatus({ onBack, width = 80, height = 24, panelMode = false, isInputActive = true }: ToolStatusProps): React.ReactElement {
-  const tools = useMemo(() => toolIds.map(getToolInfo), []);
+  const tools = useMemo(() => toolIds.map((id) => getToolLinkInfo(id)), []);
 
   if (panelMode) {
     const statusItems = [
@@ -25,7 +26,9 @@ export function ToolStatus({ onBack, width = 80, height = 24, panelMode = false,
       ...tools.map((tool) => ({
         value: tool.id,
         label: `${tool.installed ? "✓" : "✗"} ${tool.label}`,
-        hint: tool.installed ? (tool.version ?? "installed") : "not found",
+        hint: tool.installed
+          ? `${tool.version ?? "installed"}${linkableTools.has(tool.id) ? (tool.linked ? ` → ${tool.project ? `linked (${tool.project})` : "linked"}` : " → not linked") : ""}`
+          : "not found",
         kind: "action" as const,
       })),
     ];
@@ -65,7 +68,7 @@ export function ToolStatus({ onBack, width = 80, height = 24, panelMode = false,
           </Box>
           <Text dimColor>
             {tool.installed
-              ? tool.version ?? "installed"
+              ? `${tool.version ?? "installed"}${linkableTools.has(tool.id) ? (tool.linked ? ` → ${tool.project ?? "linked"}` : " → not linked") : ""}`
               : "not found"}
           </Text>
         </Box>

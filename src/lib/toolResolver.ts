@@ -1,3 +1,5 @@
+import { existsSync, readFileSync } from "node:fs";
+import { join } from "node:path";
 import { resolveSupabaseCommand, type CommandExecution } from "./runner.js";
 import { commandExists, execCapture } from "./system.js";
 import type { CliToolId } from "../data/types.js";
@@ -75,5 +77,72 @@ export function getToolInfo(toolId: CliToolId): ToolInfo {
     version,
   };
   toolInfoCache.set(toolId, info);
+  return info;
+}
+
+export interface ToolLinkInfo extends ToolInfo {
+  linked: boolean;
+  project?: string;
+}
+
+function detectSupabaseLink(cwd: string): { linked: boolean; project?: string } {
+  try {
+    const configPath = join(cwd, ".supabase", "config.toml");
+    if (existsSync(configPath)) {
+      const content = readFileSync(configPath, "utf-8");
+      const match = content.match(/project_id\s*=\s*"([^"]+)"/);
+      return { linked: true, project: match?.[1] };
+    }
+  } catch { /* ignore */ }
+  return { linked: false };
+}
+
+function detectVercelLink(cwd: string): { linked: boolean; project?: string } {
+  try {
+    const projectPath = join(cwd, ".vercel", "project.json");
+    if (existsSync(projectPath)) {
+      const data = JSON.parse(readFileSync(projectPath, "utf-8"));
+      return { linked: true, project: data.projectId };
+    }
+  } catch { /* ignore */ }
+  return { linked: false };
+}
+
+function detectGhLink(cwd: string): { linked: boolean; project?: string } {
+  try {
+    const remote = execCapture(`git -C "${cwd}" remote get-url origin 2>/dev/null`);
+    if (remote) {
+      const match = remote.match(/[/:]([\w.-]+\/[\w.-]+?)(?:\.git)?$/);
+      return { linked: true, project: match?.[1] ?? remote };
+    }
+  } catch { /* ignore */ }
+  return { linked: false };
+}
+
+const toolLinkCache = new Map<CliToolId, ToolLinkInfo>();
+
+export function getToolLinkInfo(toolId: CliToolId, cwd: string = process.cwd()): ToolLinkInfo {
+  const cached = toolLinkCache.get(toolId);
+  if (cached) return cached;
+
+  const base = getToolInfo(toolId);
+  let linkStatus: { linked: boolean; project?: string } = { linked: false };
+
+  if (base.installed) {
+    switch (toolId) {
+      case "supabase":
+        linkStatus = detectSupabaseLink(cwd);
+        break;
+      case "vercel":
+        linkStatus = detectVercelLink(cwd);
+        break;
+      case "gh":
+        linkStatus = detectGhLink(cwd);
+        break;
+    }
+  }
+
+  const info: ToolLinkInfo = { ...base, ...linkStatus };
+  toolLinkCache.set(toolId, info);
   return info;
 }
