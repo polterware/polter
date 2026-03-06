@@ -224,7 +224,7 @@ function writeBootstrapPayload(config: OpsSupabaseConfigInput): string {
         publishableKey: config.publishableKey,
         projectRef: config.projectRef,
         updatedAt: new Date().toISOString(),
-        source: "polterbase",
+        source: "polter",
       },
       null,
       2,
@@ -245,7 +245,7 @@ async function promptProjectMode(
   }
 
   const selected = await promptSelect(
-    "How should Polterbase prepare Supabase for Ops?",
+    "How should Polter prepare Supabase for Ops?",
     [
       { value: "existing", label: "Use an existing Supabase project" },
       { value: "create", label: "Create a new Supabase project first" },
@@ -447,7 +447,7 @@ async function deployMacosApp(
 ): Promise<number> {
   const artifact = await resolveOpsMacosArtifact(context.options);
 
-  const tempRoot = await mkdtemp(join(tmpdir(), "polterbase-ops-"));
+  const tempRoot = await mkdtemp(join(tmpdir(), "polter-ops-"));
   const archivePath = join(tempRoot, artifact.fileName);
   const extractDir = join(tempRoot, "extract");
   mkdirSync(extractDir, { recursive: true });
@@ -483,7 +483,7 @@ async function deployMacosApp(
 
   if (options.requireExistingInstallation && !existsSync(destination)) {
     throw new Error(
-      `No existing Ops installation was found at ${destination}. Run \`polterbase app install ops\` first.`,
+      `No existing Ops installation was found at ${destination}. Run \`polter app install ops\` first.`,
     );
   }
 

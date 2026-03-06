@@ -1,14 +1,14 @@
-# @polterware/polterbase
+# @polterware/polter
 
-![Polterbase running](docs/assets/polterbase-hero.png)
+![Polter running](docs/assets/polter-hero.png)
 
-[![npm version](https://img.shields.io/npm/v/%40polterware%2Fpolterbase.svg)](https://www.npmjs.com/package/@polterware/polterbase)
+[![npm version](https://img.shields.io/npm/v/%40polterware%2Fpolter.svg)](https://www.npmjs.com/package/@polterware/polter)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/badge/Node.js-18%2B-green.svg)](https://nodejs.org/)
 
 An optimized interactive CLI for managing Supabase CLI workflows with more speed, consistency, and discoverability.
 
-Polterbase is a productivity layer on top of the official `supabase` CLI. Instead of memorizing command trees, you browse one unified board, add extra args interactively, attach global flags, and pin common workflows for one-click reuse.
+Polter is a productivity layer on top of the official `supabase` CLI. Instead of memorizing command trees, you browse one unified board, add extra args interactively, attach global flags, and pin common workflows for one-click reuse.
 
 ## Features
 
@@ -18,10 +18,10 @@ Polterbase is a productivity layer on top of the official `supabase` CLI. Instea
 - **Global Flags Picker**: Add common global flags in one step
 - **Pinned Commands and Runs**: Toggle base command pins with `→` and pin exact runs after success
 - **Custom Command Mode**: Run raw Supabase arguments like `-v` or `status -o json`
-- **Built-in Self-Update**: Update Polterbase for the current repository or globally through npm
+- **Built-in Self-Update**: Update Polter for the current repository or globally through npm
 - **Shell Execution**: Resolves `supabase` from the current repository first, then falls back to `PATH`
 - **TypeScript-based CLI**: Strongly typed internal implementation
-- **App Workflows**: Explicit `polterbase app ...` flows for repository-aware setup, linking, migrations, runtime configuration, and app installation
+- **App Workflows**: Explicit `polter app ...` flows for repository-aware setup, linking, migrations, runtime configuration, and app installation
 
 ---
 
@@ -30,31 +30,31 @@ Polterbase is a productivity layer on top of the official `supabase` CLI. Instea
 ### Run one-off without installing
 
 ```bash
-npx @polterware/polterbase@latest
+npx @polterware/polter@latest
 ```
 
 ### Install in a repository
 
 ```bash
-npm install -D @polterware/polterbase
+npm install -D @polterware/polter
 ```
 
 Then run it from that repository with:
 
 ```bash
-npx polterbase
+npx polter
 ```
 
 ### Install globally
 
 ```bash
-npm install -g @polterware/polterbase
+npm install -g @polterware/polter
 ```
 
 Then run:
 
 ```bash
-polterbase
+polter
 ```
 
 Use a repository install when you want the CLI version pinned to one project.
@@ -65,19 +65,19 @@ Use a global install when you want the same CLI version across every repository.
 If you installed it globally, update it with:
 
 ```bash
-npm install -g @polterware/polterbase@latest
+npm install -g @polterware/polter@latest
 ```
 
 If you installed it in a repository, update it there with:
 
 ```bash
-npm install -D @polterware/polterbase@latest
+npm install -D @polterware/polter@latest
 ```
 
-You can also run the same update flow from inside Polterbase:
+You can also run the same update flow from inside Polter:
 
 1. Go to the `Actions` section
-2. Choose `Update Polterbase`
+2. Choose `Update Polter`
 3. Choose `Current repository` or `Global install`
 4. Confirm the npm update command
 
@@ -105,46 +105,46 @@ Install Supabase CLI (official docs):
 
 ### App Workflows
 
-Polterbase keeps generic Supabase execution separate from app-specific automation.
+Polter keeps generic Supabase execution separate from app-specific automation.
 Use the `app` namespace when you want project-aware workflows:
 
 ```bash
-polterbase app setup ops --path .
+polter app setup ops --path .
 ```
 
 ```bash
-polterbase app link ops --path .
+polter app link ops --path .
 ```
 
 ```bash
-polterbase app migrate ops push --path .
+polter app migrate ops push --path .
 ```
 
 ```bash
-polterbase app configure ops --path .
+polter app configure ops --path .
 ```
 
 ```bash
-polterbase app install ops
+polter app install ops
 ```
 
 ```bash
-polterbase app update ops
+polter app update ops
 ```
 
 `setup ops` installs dependencies, collects Supabase connection data, links the project, pushes migrations, and writes the runtime bootstrap payload used by the desktop app.
 
 `configure ops` refreshes the runtime connection payload without reinstalling the app.
 
-`install ops` is currently macOS-only. By default it resolves the latest GitHub release from `polterware/ops`, accepts `--version <version>` to pin a release, and still supports `--artifact-url` or `POLTERBASE_OPS_MACOS_ARTIFACT_URL` as manual overrides.
+`install ops` is currently macOS-only. By default it resolves the latest GitHub release from `polterware/ops`, accepts `--version <version>` to pin a release, and still supports `--artifact-url` or `POLTER_OPS_MACOS_ARTIFACT_URL` as manual overrides.
 
 `update ops` is also macOS-only. It replaces the installed `ops.app` with a newer release while preserving the persisted runtime configuration, local settings, and Supabase session state stored outside the app bundle.
 
-Use `POLTERBASE_OPS_GITHUB_REPO=owner/repo` when you need to resolve releases from a fork or a different repository.
+Use `POLTER_OPS_GITHUB_REPO=owner/repo` when you need to resolve releases from a fork or a different repository.
 
 ### Execution Model
 
-Polterbase executes workflow commands as:
+Polter executes workflow commands as:
 
 ```bash
 supabase <command> <extra-args> <global-flags>
@@ -153,11 +153,11 @@ supabase <command> <extra-args> <global-flags>
 The self-update action is the only built-in exception and can run one of:
 
 ```bash
-npm install -g @polterware/polterbase@latest
+npm install -g @polterware/polter@latest
 ```
 
 ```bash
-npm install -D @polterware/polterbase@latest
+npm install -D @polterware/polter@latest
 ```
 
 ### Typical Flow
@@ -243,7 +243,7 @@ Available global flags in the interactive selector:
 
 ## Pinned Commands
 
-Polterbase supports two pinned sections at the top of the main menu:
+Polter supports two pinned sections at the top of the main menu:
 
 - `Pinned Runs` for exact commands like `db pull --debug`
 - `Pinned Commands` for base commands like `db` or `start`
@@ -252,7 +252,7 @@ The main menu and the suggested-args screen group related options into boxed sec
 
 Use `→` on a selected base command to pin or unpin it.
 Use `→` on the suggested subcommand screen to pin exact runs like `db pull` before executing.
-After a successful execution, Polterbase can also pin that exact command into `Pinned Runs`.
+After a successful execution, Polter can also pin that exact command into `Pinned Runs`.
 
 Pins are persisted locally using OS-level app config storage.
 
@@ -263,31 +263,31 @@ Pins are persisted locally using OS-level app config storage.
 ### Bootstrap Ops from source
 
 ```bash
-polterbase app setup ops --path /absolute/path/to/ops
+polter app setup ops --path /absolute/path/to/ops
 ```
 
 ### Reconfigure an installed Ops app
 
 ```bash
-polterbase app configure ops
+polter app configure ops
 ```
 
 ### Install the latest released Ops app
 
 ```bash
-polterbase app install ops
+polter app install ops
 ```
 
 Install a specific release:
 
 ```bash
-polterbase app install ops --version 1.0.0
+polter app install ops --version 1.0.0
 ```
 
 Update an existing installation without re-running runtime configuration:
 
 ```bash
-polterbase app update ops
+polter app update ops
 ```
 
 ### Check Supabase CLI version
@@ -363,7 +363,7 @@ Fix:
 
 ### Command exits with non-zero code
 
-Polterbase forwards execution to Supabase CLI. Use `--debug` and re-run to inspect detailed logs.
+Polter forwards execution to Supabase CLI. Use `--debug` and re-run to inspect detailed logs.
 
 ### Pinned commands are missing
 
@@ -377,7 +377,7 @@ Ensure you are running in a terminal that supports interactive TTY prompts.
 
 ## Security Notes
 
-- Polterbase executes local shell commands through your installed Supabase CLI.
+- Polter executes local shell commands through your installed Supabase CLI.
 - Keep Supabase tokens out of shared shells and CI logs.
 - Prefer short-lived tokens and least-privileged project access.
 
@@ -392,7 +392,7 @@ Ensure you are running in a terminal that supports interactive TTY prompts.
 
 Repository:
 
-- [polterware/polterbase](https://github.com/polterware/polterbase)
+- [polterware/polter](https://github.com/polterware/polter)
 
 ---
 

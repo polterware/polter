@@ -7,7 +7,7 @@ function assertAppCommand(options: ParsedCliOptions): asserts options is ParsedC
   app: string;
 } {
   if (!options.action || !options.app) {
-    throw new Error("Usage: polterbase app <setup|link|migrate|configure|install|update> <app>");
+    throw new Error("Usage: polter app <setup|link|migrate|configure|install|update> <app>");
   }
 }
 
@@ -22,7 +22,7 @@ export async function runAppCli(options: ParsedCliOptions): Promise<number> {
   const projectRoot = profile.resolveProjectRoot(process.cwd(), options.path);
 
   process.stdout.write(
-    `${pc.bold("Polterbase")} ${pc.dim("app workflow")} ${pc.bold(profile.displayName)} ${pc.dim(`(${options.action})`)}\n\n`,
+    `${pc.bold("Polter")} ${pc.dim("app workflow")} ${pc.bold(profile.displayName)} ${pc.dim(`(${options.action})`)}\n\n`,
   );
 
   return profile.run(options.action, {

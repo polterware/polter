@@ -180,7 +180,7 @@ export function CommandExecution({
       label: "📋 Copy command to clipboard",
     },
     { value: "menu", label: "← Return to main menu" },
-    { value: "exit", label: "🚪 Exit Polterbase" },
+    { value: "exit", label: "🚪 Exit Polter" },
   );
 
   return (

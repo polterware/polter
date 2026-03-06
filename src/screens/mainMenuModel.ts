@@ -146,7 +146,7 @@ export function buildMainMenuItems({
   nextItems.push({
     id: "action-update",
     value: "__action_update__",
-    label: "Update Polterbase",
+    label: "Update Polter",
     hint: "Update the current repo install or the global install",
     icon: "⬆️",
     kind: "action",

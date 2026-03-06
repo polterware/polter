@@ -2,7 +2,7 @@ import Conf from "conf";
 
 const config = new Conf({
   projectName:
-    process.env.NODE_ENV === "test" ? "polterbase-test" : "polterbase",
+    process.env.NODE_ENV === "test" ? "polter-test" : "polter",
 });
 
 const COMMAND_PINS_KEY = "pinnedCommandBasesV2";

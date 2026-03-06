@@ -10,7 +10,7 @@ import {
 const tempDirs: string[] = [];
 
 function createTempDir(): string {
-  const dir = mkdtempSync(join(tmpdir(), "polterbase-runner-"));
+  const dir = mkdtempSync(join(tmpdir(), "polter-runner-"));
   tempDirs.push(dir);
   return dir;
 }

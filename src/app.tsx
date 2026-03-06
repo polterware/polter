@@ -17,7 +17,7 @@ export function App(): React.ReactElement {
     process.stdout.write(
       "\n" +
       colors.dim("Thank you for using ") +
-      colors.primaryBold("Polterbase") +
+      colors.primaryBold("Polter") +
       colors.dim("!") +
       "\n\n",
     );

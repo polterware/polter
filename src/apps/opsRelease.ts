@@ -1,8 +1,8 @@
 import type { ParsedCliOptions } from "./types.js";
 
 export const DEFAULT_OPS_GITHUB_REPO = "polterware/ops";
-export const DEFAULT_ARTIFACT_ENV_VAR = "POLTERBASE_OPS_MACOS_ARTIFACT_URL";
-export const DEFAULT_GITHUB_REPO_ENV_VAR = "POLTERBASE_OPS_GITHUB_REPO";
+export const DEFAULT_ARTIFACT_ENV_VAR = "POLTER_OPS_MACOS_ARTIFACT_URL";
+export const DEFAULT_GITHUB_REPO_ENV_VAR = "POLTER_OPS_GITHUB_REPO";
 
 const GITHUB_API_BASE = "https://api.github.com/repos";
 

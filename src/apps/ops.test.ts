@@ -7,7 +7,7 @@ import { opsProfile } from "./ops.js";
 const tempDirs: string[] = [];
 
 function createOpsFixture(): string {
-  const root = mkdtempSync(join(tmpdir(), "polterbase-ops-test-"));
+  const root = mkdtempSync(join(tmpdir(), "polter-ops-test-"));
   tempDirs.push(root);
 
   mkdirSync(join(root, "src-tauri"), { recursive: true });
@@ -34,7 +34,7 @@ describe("opsProfile", () => {
   });
 
   it("resolves a sibling ops folder from a parent directory", () => {
-    const marketRoot = mkdtempSync(join(tmpdir(), "polterbase-market-test-"));
+    const marketRoot = mkdtempSync(join(tmpdir(), "polter-market-test-"));
     tempDirs.push(marketRoot);
 
     const opsRoot = join(marketRoot, "ops");

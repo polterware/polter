@@ -7,7 +7,7 @@ import { findNearestPackageRoot } from "./packageRoot.js";
 const tempDirs: string[] = [];
 
 function createTempDir(): string {
-  const dir = mkdtempSync(join(tmpdir(), "polterbase-package-root-"));
+  const dir = mkdtempSync(join(tmpdir(), "polter-package-root-"));
   tempDirs.push(dir);
   return dir;
 }

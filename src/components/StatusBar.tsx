@@ -13,7 +13,7 @@ export function StatusBar({ hint }: StatusBarProps): React.ReactElement {
         {hint || "↑↓ navigate · Enter select · Esc back"}
       </Text>
       <Text dimColor>
-        polterbase v{VERSION}
+        polter v{VERSION}
       </Text>
     </Box>
   );

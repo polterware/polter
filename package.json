@@ -1,10 +1,10 @@
 {
-  "name": "@polterware/polterbase",
-  "version": "0.2.8",
+  "name": "@polterware/polter",
+  "version": "0.0.0",
   "description": "An interactive CLI for managing Supabase CLI workflows.",
   "type": "module",
   "bin": {
-    "polterbase": "./dist/index.js"
+    "polter": "./dist/index.js"
   },
   "files": [
     "dist",
@@ -13,12 +13,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/polterware/polterbase.git"
+    "url": "https://github.com/polterware/polter.git"
   },
   "bugs": {
-    "url": "https://github.com/polterware/polterbase/issues"
+    "url": "https://github.com/polterware/polter/issues"
   },
-  "homepage": "https://github.com/polterware/polterbase#readme",
+  "homepage": "https://github.com/polterware/polter#readme",
   "publishConfig": {
     "access": "public"
   },
@@ -31,7 +31,7 @@
   },
   "keywords": [
     "polterware",
-    "polterbase",
+    "polter",
     "cli",
     "typescript"
   ],

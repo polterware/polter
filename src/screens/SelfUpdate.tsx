@@ -17,7 +17,7 @@ interface SelfUpdateProps {
 type Phase = "target" | "confirm" | "running" | "success" | "error";
 type UpdateTarget = "repository" | "global";
 
-const packageName = "@polterware/polterbase";
+const packageName = "@polterware/polter";
 const globalUpdateArgs = ["install", "-g", `${packageName}@latest`];
 const repositoryUpdateArgs = ["install", "-D", `${packageName}@latest`];
 
@@ -62,7 +62,7 @@ export function SelfUpdate({
     return (
       <Box flexDirection="column">
         <Box marginBottom={1}>
-          <Text bold>Choose where to update Polterbase.</Text>
+          <Text bold>Choose where to update Polter.</Text>
         </Box>
 
         <SelectList
@@ -149,7 +149,7 @@ export function SelfUpdate({
         </Box>
         <Divider />
         <Box marginTop={1}>
-          <Spinner label="Updating Polterbase..." />
+          <Spinner label="Updating Polter..." />
         </Box>
       </Box>
     );
@@ -168,7 +168,7 @@ export function SelfUpdate({
           </Text>
         </Box>
         <Box marginBottom={1} marginLeft={2} flexDirection="column">
-          <Text dimColor>Restart Polterbase to use the latest version.</Text>
+          <Text dimColor>Restart Polter to use the latest version.</Text>
           {target === "repository" && repositoryRoot && (
             <Text dimColor>Repository updated in: {repositoryRoot}</Text>
           )}
@@ -176,7 +176,7 @@ export function SelfUpdate({
         <SelectList
           items={[
             { value: "__back__", label: "← Back to menu" },
-            { value: "__exit__", label: "🚪 Exit Polterbase" },
+            { value: "__exit__", label: "🚪 Exit Polter" },
           ]}
           onSelect={(value) => {
             if (value === "__exit__") {
@@ -250,7 +250,7 @@ export function SelfUpdate({
             ? [{ value: "target", label: "↔ Choose update target" }]
             : []),
           { value: "menu", label: "← Return to main menu" },
-          { value: "exit", label: "🚪 Exit Polterbase" },
+          { value: "exit", label: "🚪 Exit Polter" },
         ]}
         onSelect={(value) => {
           switch (value) {

@@ -24,7 +24,7 @@ export function GhostBanner(): React.ReactElement {
           color={inkColors.accentContrast}
           bold
         >
-          {" POLTERBASE "}
+          {" POLTER "}
         </Text>
         <Text dimColor>Version: {VERSION}</Text>
         <Text dimColor>The modern interactive CLI for Supabase</Text>
