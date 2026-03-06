@@ -44,4 +44,29 @@ describe("parseCliArgs", () => {
       },
     });
   });
+
+  it("parses app install version overrides", () => {
+    expect(
+      parseCliArgs([
+        "app",
+        "install",
+        "uru",
+        "--platform",
+        "macos",
+        "--version",
+        "1.2.3",
+        "--install-dir",
+        "/Applications",
+      ]),
+    ).toEqual({
+      mode: "app",
+      options: {
+        action: "install",
+        app: "uru",
+        platform: "macos",
+        version: "1.2.3",
+        installDir: "/Applications",
+      },
+    });
+  });
 });

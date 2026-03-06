@@ -12,6 +12,7 @@ export interface ParsedCliOptions {
   app?: string;
   path?: string;
   platform?: string;
+  version?: string;
   artifactUrl?: string;
   installDir?: string;
   yes?: boolean;

@@ -4,6 +4,7 @@ import { dirname, join, resolve } from "node:path";
 import { tmpdir } from "node:os";
 import pc from "picocolors";
 import { getUruBootstrapPayloadPath } from "./bootstrapPaths.js";
+import { resolveUruMacosArtifact } from "./uruRelease.js";
 import type {
   AppAction,
   AppExecutionContext,
@@ -21,7 +22,6 @@ interface UruSupabaseConfigInput {
 }
 
 const LINK_REF_FILE = join("supabase", ".temp", "project-ref");
-const DEFAULT_ARTIFACT_ENV_VAR = "POLTERBASE_URU_MACOS_ARTIFACT_URL";
 
 function isUruProjectRoot(candidate: string): boolean {
   return (
@@ -377,14 +377,16 @@ async function runConfigure(context: AppExecutionContext): Promise<number> {
   return 0;
 }
 
-async function downloadFile(url: string, destinationPath: string): Promise<void> {
+async function downloadFile(url: string, destinationPath: string): Promise<number> {
   const response = await fetch(url);
   if (!response.ok) {
     throw new Error(`Unable to download artifact: ${response.status} ${response.statusText}`);
   }
 
   const arrayBuffer = await response.arrayBuffer();
-  writeFileSync(destinationPath, Buffer.from(arrayBuffer));
+  const buffer = Buffer.from(arrayBuffer);
+  writeFileSync(destinationPath, buffer);
+  return buffer.byteLength;
 }
 
 async function extractArchive(archivePath: string, outputDir: string): Promise<void> {
@@ -434,23 +436,29 @@ async function findFirstAppBundle(dir: string): Promise<string | undefined> {
 }
 
 async function installMacosApp(context: AppExecutionContext): Promise<number> {
-  const artifactUrl =
-    context.options.artifactUrl ?? process.env[DEFAULT_ARTIFACT_ENV_VAR];
-
-  if (!artifactUrl) {
-    throw new Error(
-      `Missing macOS artifact URL. Pass --artifact-url or set ${DEFAULT_ARTIFACT_ENV_VAR}.`,
-    );
-  }
+  const artifact = await resolveUruMacosArtifact(context.options);
 
   const tempRoot = await mkdtemp(join(tmpdir(), "polterbase-uru-"));
-  const fileName = artifactUrl.split("/").pop() ?? "uru-macos.zip";
-  const archivePath = join(tempRoot, fileName);
+  const archivePath = join(tempRoot, artifact.fileName);
   const extractDir = join(tempRoot, "extract");
   mkdirSync(extractDir, { recursive: true });
 
+  if (artifact.source === "github-release") {
+    const releaseLabel = artifact.tagName ?? "latest";
+    process.stdout.write(
+      `${pc.dim(`Resolved ${artifact.fileName} from ${artifact.repo} (${releaseLabel})`)}\n`,
+    );
+  } else {
+    process.stdout.write(`${pc.dim(`Using explicit artifact URL: ${artifact.url}`)}\n`);
+  }
+
   process.stdout.write(`${pc.dim("Downloading Uru macOS artifact...")}\n`);
-  await downloadFile(artifactUrl, archivePath);
+  const downloadedSize = await downloadFile(artifact.url, archivePath);
+  if (artifact.size && downloadedSize !== artifact.size) {
+    throw new Error(
+      `Downloaded file size mismatch for ${artifact.fileName}. Expected ${artifact.size} bytes but received ${downloadedSize}.`,
+    );
+  }
 
   process.stdout.write(`${pc.dim("Extracting artifact...")}\n`);
   await extractArchive(archivePath, extractDir);
