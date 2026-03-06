@@ -21,7 +21,7 @@ export function ToolStatus({ onBack, width = 80, height = 24, panelMode = false,
 
   if (panelMode) {
     const statusItems = [
-      { value: "__section__", label: "🔧 Tool Status", kind: "header" as const, selectable: false },
+      { value: "__section__", label: "Installed Tools", kind: "header" as const, selectable: false },
       ...tools.map((tool) => ({
         value: tool.id,
         label: `${tool.installed ? "✓" : "✗"} ${tool.label}`,
@@ -41,6 +41,7 @@ export function ToolStatus({ onBack, width = 80, height = 24, panelMode = false,
           maxVisible={Math.max(6, height - 6)}
           isInputActive={isInputActive}
           arrowNavigation
+          panelFocused={isInputActive}
         />
       </Box>
     );

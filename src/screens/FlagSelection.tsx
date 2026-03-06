@@ -3,7 +3,7 @@ import { Box, Text } from "ink";
 import { FlagToggle } from "../components/FlagToggle.js";
 import { StatusBar } from "../components/StatusBar.js";
 import { getFlagsForTool } from "../data/flags.js";
-import { inkColors } from "../theme.js";
+import { inkColors, panel } from "../theme.js";
 import type { NavigationParams, Screen } from "../hooks/useNavigation.js";
 import type { CliToolId } from "../data/types.js";
 
@@ -52,7 +52,7 @@ export function FlagSelection({
         <Box
           flexDirection="column"
           borderStyle="round"
-          borderColor={inkColors.accent}
+          borderColor={isInputActive ? inkColors.accent : panel.borderDim}
           borderDimColor
           paddingX={1}
         >

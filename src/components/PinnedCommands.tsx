@@ -108,11 +108,6 @@ export function PinnedCommands({
   if (items.length === 0) {
     return (
       <Box flexDirection="column" paddingX={1}>
-        <Box marginBottom={1}>
-          <Text color={inkColors.accent} bold>
-            📌 Pinned
-          </Text>
-        </Box>
         <Text color="gray">
           No pinned items. Press p on any command to pin it.
         </Text>
@@ -122,12 +117,6 @@ export function PinnedCommands({
 
   return (
     <Box flexDirection="column" paddingX={1}>
-      <Box marginBottom={1}>
-        <Text color={inkColors.accent} bold>
-          📌 Pinned
-        </Text>
-      </Box>
-
       {pinFeedback && (
         <Box marginBottom={1}>
           <Text color={inkColors.accent}>✓ {pinFeedback}</Text>
@@ -144,6 +133,7 @@ export function PinnedCommands({
         onCancel={onBack}
         isInputActive={isInputActive}
         arrowNavigation
+        panelFocused={isInputActive}
       />
     </Box>
   );

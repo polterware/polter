@@ -46,26 +46,28 @@ function buildBreadcrumb(nav: PanelNavState): string {
   // Base label from the current view
   let base: string;
   switch (nav.view) {
-    case "feature":
-      base = getFeatureById(nav.featureId)?.label ?? nav.featureId;
+    case "feature": {
+      const feat = getFeatureById(nav.featureId);
+      base = feat ? `${feat.icon} ${feat.label}` : nav.featureId;
       break;
+    }
     case "pinned":
-      base = "Pinned";
+      base = "📌 Pinned";
       break;
     case "custom-command":
-      base = "Custom Cmd";
+      base = "✏️ Custom Cmd";
       break;
     case "pipelines":
-      base = "Pipelines";
+      base = "🔗 Pipelines";
       break;
     case "tool-status":
-      base = "Status";
+      base = "🔧 Status";
       break;
     case "config":
-      base = "Config";
+      base = "⚙️ Config";
       break;
     case "self-update":
-      base = "Update";
+      base = "⬆️ Update";
       break;
     default:
       base = nav.view;
@@ -360,11 +362,15 @@ export function AppPanel(): React.ReactElement {
       case "command-execution":
         return (
           <CommandExecution
+            key={`${nav.view}-${nav.innerParams.tool}-${(nav.innerParams.args ?? []).join("-")}`}
             args={nav.innerParams.args ?? []}
             tool={nav.innerParams.tool}
             onBack={nav.goBackInner}
             onHome={nav.goHomeInner}
             onExit={handleExit}
+            onRunSuggestion={(sugTool, sugArgs) => {
+              nav.switchViewAndNavigate("custom-command", "confirm-execute", { tool: sugTool, args: sugArgs });
+            }}
             width={w}
             height={mainContentHeight}
             panelMode

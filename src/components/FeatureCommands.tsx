@@ -51,6 +51,7 @@ export function FeatureCommands({
         pinnedCommands,
         pinnedRuns,
         showPinnedSection: false,
+        showFeatureHeader: false,
       }),
     [feature, pinnedCommands, pinnedRuns],
   );
@@ -121,12 +122,6 @@ export function FeatureCommands({
 
   return (
     <Box flexDirection="column" paddingX={1}>
-      <Box marginBottom={1}>
-        <Text color={inkColors.accent} bold>
-          {feature.icon} {feature.label}
-        </Text>
-      </Box>
-
       {pinFeedback && (
         <Box marginBottom={1}>
           <Text color={inkColors.accent}>✓ {pinFeedback}</Text>
@@ -143,6 +138,7 @@ export function FeatureCommands({
         onCancel={onBack}
         isInputActive={isInputActive}
         arrowNavigation
+        panelFocused={isInputActive}
       />
     </Box>
   );

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Box, Text, useInput } from "ink";
 import TextInputComponent from "ink-text-input";
-import { inkColors } from "../theme.js";
+import { inkColors, panel } from "../theme.js";
 
 interface TextPromptProps {
   label: string;
@@ -11,6 +11,8 @@ interface TextPromptProps {
   validate?: (value: string) => string | undefined;
   arrowNavigation?: boolean;
   isInputActive?: boolean;
+  boxed?: boolean;
+  focused?: boolean;
 }
 
 export function TextPrompt({
@@ -21,6 +23,8 @@ export function TextPrompt({
   validate,
   arrowNavigation = false,
   isInputActive = true,
+  boxed = false,
+  focused = true,
 }: TextPromptProps): React.ReactElement {
   const [value, setValue] = useState("");
   const [error, setError] = useState<string>();
@@ -46,7 +50,7 @@ export function TextPrompt({
     onSubmit(val);
   };
 
-  return (
+  const content = (
     <Box flexDirection="column">
       <Box gap={1}>
         <Text color={inkColors.accent} bold>
@@ -73,4 +77,14 @@ export function TextPrompt({
       )}
     </Box>
   );
+
+  if (boxed) {
+    return (
+      <Box borderStyle="round" borderColor={focused ? inkColors.accent : panel.borderDim} paddingX={1}>
+        {content}
+      </Box>
+    );
+  }
+
+  return content;
 }

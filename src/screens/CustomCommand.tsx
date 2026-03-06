@@ -41,11 +41,13 @@ export function CustomCommand({
 
     return (
       <Box flexDirection="column" paddingX={panelMode ? 1 : 0}>
-        <Box marginBottom={1}>
-          <Text bold color={inkColors.accent}>
-            ✏️ Custom Command
-          </Text>
-        </Box>
+        {!panelMode && (
+          <Box marginBottom={1}>
+            <Text bold color={inkColors.accent}>
+              ✏️ Custom Command
+            </Text>
+          </Box>
+        )}
         {!panelMode && <Text dimColor>Select tool:</Text>}
 
         <SelectList
@@ -64,6 +66,7 @@ export function CustomCommand({
           maxVisible={panelMode ? Math.max(6, height - 6) : undefined}
           isInputActive={isInputActive}
           arrowNavigation={panelMode}
+          panelFocused={isInputActive}
         />
 
         {!panelMode && <StatusBar hint="↑↓ navigate · Enter select · Esc back" width={width} />}
@@ -73,12 +76,14 @@ export function CustomCommand({
 
   return (
     <Box flexDirection="column" paddingX={panelMode ? 1 : 0}>
-      <Box marginBottom={1} gap={1}>
-        <Text bold color={inkColors.accent}>
-          ✏️ Custom Command
-        </Text>
-        <Text dimColor>({selectedTool})</Text>
-      </Box>
+      {!panelMode && (
+        <Box marginBottom={1} gap={1}>
+          <Text bold color={inkColors.accent}>
+            ✏️ Custom Command
+          </Text>
+          <Text dimColor>({selectedTool})</Text>
+        </Box>
+      )}
 
       <TextPrompt
         label={`Enter your ${selectedTool} command/flags:`}
@@ -94,6 +99,8 @@ export function CustomCommand({
         onCancel={() => setPhase("tool-select")}
         arrowNavigation={panelMode}
         isInputActive={isInputActive}
+        boxed={panelMode}
+        focused={isInputActive}
       />
 
       {!panelMode && <StatusBar hint="Type a command · Enter to continue · Esc to go back" width={width} />}

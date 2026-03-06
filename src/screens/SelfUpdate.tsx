@@ -111,6 +111,7 @@ export function SelfUpdate({
           maxVisible={panelMode ? Math.max(6, height - 6) : undefined}
           isInputActive={isInputActive}
           arrowNavigation={panelMode}
+          panelFocused={isInputActive}
         />
 
         {repositoryRoot && (
@@ -233,6 +234,7 @@ export function SelfUpdate({
           maxVisible={panelMode ? Math.max(6, height - 6) : undefined}
           isInputActive={isInputActive}
           arrowNavigation={panelMode}
+          panelFocused={isInputActive}
         />
       </Box>
     );
@@ -334,6 +336,7 @@ export function SelfUpdate({
         maxVisible={panelMode ? Math.max(6, height - 6) : undefined}
         isInputActive={isInputActive}
         arrowNavigation={panelMode}
+        panelFocused={isInputActive}
       />
 
       {!panelMode && <StatusBar width={width} />}

@@ -86,11 +86,13 @@ export function PipelineList({
 
   return (
     <Box flexDirection="column" paddingX={panelMode ? 1 : 0}>
-      <Box marginBottom={1}>
-        <Text bold color={inkColors.accent}>
-          🔗 Pipelines
-        </Text>
-      </Box>
+      {!panelMode && (
+        <Box marginBottom={1}>
+          <Text bold color={inkColors.accent}>
+            🔗 Pipelines
+          </Text>
+        </Box>
+      )}
 
       <SelectList
         items={items}
@@ -112,6 +114,7 @@ export function PipelineList({
         maxVisible={panelMode ? Math.max(6, height - 6) : undefined}
         isInputActive={isInputActive}
         arrowNavigation={panelMode}
+        panelFocused={isInputActive}
       />
 
       {!panelMode && <StatusBar hint="↑↓ navigate · Enter select · Esc back" width={width} />}

@@ -21,7 +21,7 @@ export interface PanelNavState {
 
 export function usePanelNavigation() {
   const [state, setState] = useState<PanelNavState>({
-    view: "feature",
+    view: "pipelines",
     featureId: "database",
     innerScreen: "home",
     innerParams: {},
@@ -100,11 +100,25 @@ export function usePanelNavigation() {
     }));
   }, []);
 
+  const switchViewAndNavigate = useCallback(
+    (view: PanelView, screen: Screen, params?: NavigationParams) => {
+      setState((prev) => ({
+        ...prev,
+        view,
+        innerScreen: screen,
+        innerParams: params ?? {},
+        innerStack: [{ screen: "home", params: {} }],
+      }));
+    },
+    [],
+  );
+
   return {
     ...state,
     selectSidebarItem,
     navigateInner,
     goBackInner,
     goHomeInner,
+    switchViewAndNavigate,
   };
 }

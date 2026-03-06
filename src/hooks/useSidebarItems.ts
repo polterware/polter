@@ -39,7 +39,6 @@ export function useSidebarItems(): SidebarItem[] {
     items.push({ id: "tool-status", label: "Tool Status", icon: "\uD83D\uDD27", type: "action", section: "system" });
     items.push({ id: "config", label: "Config", icon: "\u2699\uFE0F", type: "action", section: "system" });
     items.push({ id: "self-update", label: "Update", icon: "\u2B06\uFE0F", type: "action", section: "system" });
-    items.push({ id: "exit", label: "Exit", icon: "\uD83D\uDEAA", type: "action", section: "system" });
 
     return items;
   }, []);

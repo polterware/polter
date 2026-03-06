@@ -8,6 +8,7 @@ interface BuildHomeItemsParams {
   pinnedCommands: string[];
   pinnedRuns: string[];
   showPinnedSection?: boolean;
+  showFeatureHeader?: boolean;
 }
 
 export function getFeatures(): Feature[] {
@@ -82,6 +83,7 @@ export function buildHomeItems({
   pinnedCommands,
   pinnedRuns,
   showPinnedSection = true,
+  showFeatureHeader = true,
 }: BuildHomeItemsParams): SelectItem[] {
   const items: SelectItem[] = [];
 
@@ -99,13 +101,15 @@ export function buildHomeItems({
   }
 
   // Commands for active feature, grouped by tool
-  items.push({
-    id: "section-commands",
-    value: "__section_commands__",
-    label: `📂 ${activeFeature.label} Commands`,
-    kind: "header",
-    selectable: false,
-  });
+  if (showFeatureHeader) {
+    items.push({
+      id: "section-commands",
+      value: "__section_commands__",
+      label: `📂 ${activeFeature.label} Commands`,
+      kind: "header",
+      selectable: false,
+    });
+  }
 
   const toolOrder: Record<string, number> = { supabase: 0, vercel: 1, gh: 2, git: 3 };
   const toolIcons: Record<string, string> = { supabase: "🟢", vercel: "⚪", gh: "🔵", git: "🟠" };

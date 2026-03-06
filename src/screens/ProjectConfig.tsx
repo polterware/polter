@@ -75,6 +75,8 @@ export function ProjectConfig({
           onCancel={() => setPhase("overview")}
           arrowNavigation={panelMode}
           isInputActive={isInputActive}
+          boxed={panelMode}
+          focused={isInputActive}
         />
       </Box>
     );
@@ -102,6 +104,8 @@ export function ProjectConfig({
           onCancel={() => setPhase("overview")}
           arrowNavigation={panelMode}
           isInputActive={isInputActive}
+          boxed={panelMode}
+          focused={isInputActive}
         />
       </Box>
     );
@@ -129,6 +133,8 @@ export function ProjectConfig({
           onCancel={() => setPhase("overview")}
           arrowNavigation={panelMode}
           isInputActive={isInputActive}
+          boxed={panelMode}
+          focused={isInputActive}
         />
       </Box>
     );
@@ -185,12 +191,6 @@ export function ProjectConfig({
   if (panelMode) {
     return (
       <Box flexDirection="column" paddingX={1}>
-        <Box marginBottom={1}>
-          <Text bold color={inkColors.accent}>
-            ⚙️ Project Config
-          </Text>
-        </Box>
-
         <Box marginBottom={1} marginLeft={2}>
           <Text dimColor>Path: {configPath.file}</Text>
         </Box>
@@ -210,6 +210,7 @@ export function ProjectConfig({
           maxVisible={Math.max(6, height - 6)}
           isInputActive={isInputActive}
           arrowNavigation
+          panelFocused={isInputActive}
         />
       </Box>
     );

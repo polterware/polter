@@ -72,6 +72,10 @@ export function AppClassic(): React.ReactElement {
             tool={params.tool}
             onBack={goBack}
             onExit={handleExit}
+            onRunSuggestion={(sugTool, sugArgs) => {
+              goHome();
+              navigate("confirm-execute", { tool: sugTool, args: sugArgs });
+            }}
             width={width}
           />
         );

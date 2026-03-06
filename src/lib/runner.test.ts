@@ -5,6 +5,7 @@ import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import {
   findLocalSupabaseBinDir,
   resolveSupabaseCommand,
+  runCommand,
 } from "./runner.js";
 
 const tempDirs: string[] = [];
@@ -84,5 +85,27 @@ describe("resolveSupabaseCommand", () => {
     expect(resolution.source).toBe("path");
     expect(resolution.localBinDir).toBeUndefined();
     expect(resolution.env.PATH).toBe("/usr/bin");
+  });
+});
+
+describe("runCommand", () => {
+  it("captures stdout in quiet mode without inheriting stdin", async () => {
+    const result = await runCommand("echo", ["hello"], "/tmp", { quiet: true });
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout.trim()).toBe("hello");
+  });
+
+  it("returns non-zero exit code for failing commands in quiet mode", async () => {
+    const result = await runCommand("false", [], "/tmp", { quiet: true });
+
+    expect(result.exitCode).not.toBe(0);
+  });
+
+  it("does not hang on commands that would read stdin in quiet mode", async () => {
+    const result = await runCommand("cat", [], "/tmp", { quiet: true });
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toBe("");
   });
 });

@@ -104,8 +104,12 @@ export async function runCommand(
       cwd,
       env: resolvedExecution.env,
       shell: true,
-      stdio: ["inherit", "pipe", "pipe"],
+      stdio: [options?.quiet ? "pipe" : "inherit", "pipe", "pipe"],
     });
+
+    if (options?.quiet) {
+      child.stdin?.end();
+    }
 
     child.stdout?.on("data", (data: Buffer) => {
       const text = data.toString();

@@ -10,7 +10,8 @@ import { CommandOutput } from "../components/CommandOutput.js";
 import { useCommand } from "../hooks/useCommand.js";
 import { isPinnedRun, togglePinnedRun } from "../data/pins.js";
 import { openInBrowser, copyToClipboard } from "../lib/clipboard.js";
-import { inkColors } from "../theme.js";
+import { parseErrorSuggestions } from "../lib/errorSuggestions.js";
+import { inkColors, panel } from "../theme.js";
 import type { CliToolId } from "../data/types.js";
 
 interface CommandExecutionProps {
@@ -19,6 +20,7 @@ interface CommandExecutionProps {
   onBack: () => void;
   onHome?: () => void;
   onExit: () => void;
+  onRunSuggestion?: (tool: CliToolId, args: string[]) => void;
   width?: number;
   height?: number;
   panelMode?: boolean;
@@ -38,6 +40,7 @@ export function CommandExecution({
   onBack,
   onHome,
   onExit,
+  onRunSuggestion,
   width = 80,
   height = 24,
   panelMode = false,
@@ -107,7 +110,7 @@ export function CommandExecution({
           <Box
             flexDirection="column"
             borderStyle="round"
-            borderColor={inkColors.accent}
+            borderColor={isInputActive ? inkColors.accent : panel.borderDim}
             borderDimColor
             paddingX={1}
           >
@@ -213,6 +216,7 @@ export function CommandExecution({
           isInputActive={isInputActive}
           arrowNavigation={panelMode}
           boxedSections={panelMode}
+          panelFocused={isInputActive}
         />
       </Box>
     );
@@ -221,7 +225,34 @@ export function CommandExecution({
   // Error menu
   const hasDebug = currentArgs.includes("--debug");
 
+  const suggestions = result
+    ? parseErrorSuggestions(result.stdout, result.stderr, tool)
+    : [];
+
   const errorItems: SelectItem[] = [];
+
+  if (suggestions.length > 0) {
+    errorItems.push({
+      value: "__suggestions_header__",
+      label: "\uD83D\uDCA1 Suggested fixes",
+      kind: "header",
+    });
+    for (const s of suggestions) {
+      errorItems.push({
+        value: `suggest:${s.display}`,
+        label: s.display,
+        hint: "from error output",
+      });
+    }
+  }
+
+  if (suggestions.length > 0) {
+    errorItems.push({
+      value: "__actions_header__",
+      label: "",
+      kind: "header",
+    });
+  }
 
   if (!result?.spawnError) {
     errorItems.push({ value: "retry", label: "\uD83D\uDD04 Retry the same command" });
@@ -300,7 +331,7 @@ export function CommandExecution({
       <CommandOutput
         stdout={result?.stdout}
         stderr={result?.stderr}
-        height={Math.max(3, height - 16)}
+        height={Math.max(3, height - 16 - (suggestions.length > 0 ? suggestions.length + 4 : 0))}
         isActive={false}
       />
 
@@ -311,6 +342,21 @@ export function CommandExecution({
       <SelectList
         items={errorItems}
         onSelect={async (action) => {
+          if (action.startsWith("suggest:")) {
+            const rawCmd = action.slice("suggest:".length);
+            const parts = rawCmd.split(/\s+/);
+            const sugTool = parts[0] as CliToolId;
+            const sugArgs = parts.slice(1);
+            if (onRunSuggestion) {
+              onRunSuggestion(sugTool, sugArgs);
+            } else {
+              setCurrentArgs(sugArgs);
+              setPinMessage(undefined);
+              reset();
+              setPhase("confirm");
+            }
+            return;
+          }
           switch (action) {
             case "retry":
               setPinMessage(undefined);
@@ -339,9 +385,10 @@ export function CommandExecution({
         onCancel={onBack}
         boxedSections={panelMode}
         width={panelMode ? Math.max(20, width - 4) : width}
-        maxVisible={panelMode ? Math.max(6, height - 6) : undefined}
+        maxVisible={panelMode ? Math.max(errorItems.length + (suggestions.length > 0 ? 4 : 0), height - 6) : undefined}
         isInputActive={isInputActive}
         arrowNavigation={panelMode}
+        panelFocused={isInputActive}
       />
 
       {!panelMode && <StatusBar width={width} />}

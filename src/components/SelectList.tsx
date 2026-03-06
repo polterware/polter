@@ -4,7 +4,7 @@ import {
   buildBoxedSectionLayout,
   countBoxedSectionLines,
 } from "./selectListSections.js";
-import { inkColors } from "../theme.js";
+import { inkColors, panel } from "../theme.js";
 
 export type SelectItemKind = "header" | "command" | "run" | "action";
 
@@ -32,6 +32,7 @@ interface SelectListProps {
   width?: number;
   isInputActive?: boolean;
   arrowNavigation?: boolean;
+  panelFocused?: boolean;
 }
 
 export function SelectList({
@@ -45,6 +46,7 @@ export function SelectList({
   width = 80,
   isInputActive = true,
   arrowNavigation = false,
+  panelFocused = true,
 }: SelectListProps): React.ReactElement {
   const labelWidth = labelWidthProp ?? Math.max(16, Math.floor(width * 0.45));
   const isNarrow = width < 50;
@@ -275,7 +277,7 @@ export function SelectList({
                 key={section.key}
                 flexDirection="column"
                 borderStyle="round"
-                borderColor={inkColors.accent}
+                borderColor={panelFocused ? inkColors.accent : panel.borderDim}
                 borderDimColor={!hasSelectedRow && !isPinnedSection}
                 paddingX={1}
               >

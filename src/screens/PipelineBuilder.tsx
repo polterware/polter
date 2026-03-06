@@ -58,6 +58,8 @@ export function PipelineBuilder({
           onCancel={onBack}
           arrowNavigation={panelMode}
           isInputActive={isInputActive}
+          boxed={panelMode}
+          focused={isInputActive}
         />
 
         {!panelMode && <StatusBar hint="Type name · Enter to continue · Esc cancel" width={width} />}
@@ -153,6 +155,7 @@ export function PipelineBuilder({
           width={panelMode ? Math.max(20, width - 4) : width}
           isInputActive={isInputActive}
           arrowNavigation={panelMode}
+          panelFocused={isInputActive}
         />
 
         {!panelMode && <StatusBar hint="↑↓ navigate · Enter add step · Esc done" width={width} />}
@@ -226,6 +229,7 @@ export function PipelineBuilder({
         width={panelMode ? Math.max(20, width - 4) : width}
         isInputActive={isInputActive}
         arrowNavigation={panelMode}
+        panelFocused={isInputActive}
       />
 
       {!panelMode && <StatusBar hint="↑↓ navigate · Enter select · Esc back" width={width} />}

@@ -68,6 +68,7 @@ export function PipelineExecution({
           width={panelMode ? Math.max(20, width - 4) : width}
           isInputActive={isInputActive}
           arrowNavigation={panelMode}
+          panelFocused={isInputActive}
         />
       </Box>
     );
@@ -146,6 +147,7 @@ export function PipelineExecution({
             width={panelMode ? Math.max(20, width - 4) : width}
             isInputActive={isInputActive}
             arrowNavigation={panelMode}
+            panelFocused={isInputActive}
           />
         </>
       )}

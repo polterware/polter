@@ -85,7 +85,7 @@ export function CommandArgs({
   if (phase === "custom") {
     const toolLabel = resolvedTool === "supabase" ? "supabase" : resolvedTool;
     return (
-      <Box flexDirection="column">
+      <Box flexDirection="column" paddingX={panelMode ? 1 : 0}>
         <Box marginBottom={1} gap={1}>
           <Text color={inkColors.accent} bold>
             Command
@@ -113,6 +113,8 @@ export function CommandArgs({
           }}
           arrowNavigation={panelMode}
           isInputActive={isInputActive}
+          boxed={panelMode}
+          focused={isInputActive}
         />
 
         {!panelMode && <StatusBar hint="Type args · Enter to continue · Esc to go back" width={width} />}
@@ -139,7 +141,7 @@ export function CommandArgs({
   );
 
   return (
-    <Box flexDirection="column">
+    <Box flexDirection="column" paddingX={panelMode ? 1 : 0}>
       <Box marginBottom={1} gap={1}>
         <Text color={inkColors.accent} bold>
           Command
@@ -210,9 +212,10 @@ export function CommandArgs({
         }}
         onCancel={onBack}
         boxedSections
-        width={width}
+        width={panelMode ? Math.max(20, width - 4) : width}
         isInputActive={isInputActive}
-          arrowNavigation={panelMode}
+        arrowNavigation={panelMode}
+        panelFocused={isInputActive}
       />
 
       {!panelMode && <StatusBar hint="↑↓ navigate · Enter select · p pin · Esc back" width={width} />}
