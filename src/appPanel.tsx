@@ -222,8 +222,9 @@ export function AppPanel(): React.ReactElement {
     focus.focusMain();
   };
 
-  // Banner height estimate (ghost art is 8 lines, narrow mode is 1 line)
-  const bannerHeight = width < 60 ? 1 : 8;
+  // Ghost art = 8 lines + outer border (top+bottom) = 10
+  // Narrow mode: version box (3) + badges box (3) = 6 lines
+  const bannerHeight = width < 60 ? 6 : 10;
 
   const footerHints = FOOTER_HINTS;
 
